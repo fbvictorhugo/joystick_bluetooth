@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Joystick BT</string>
+    <string name="wait">Aguarde</string>
+    <string name="try_connect_to">Tentando conectar a %s.</string>
 </resources>

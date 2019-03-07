@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import net.fbvictorhugo.joystickbt.AppApplication;
 import net.fbvictorhugo.joystickbt.controller.BluetoothModel;
 import net.fbvictorhugo.joystickbt.controller.ConnectionBluetoothCallback;
 
@@ -50,12 +49,11 @@ public class BaseActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... address) {
             try {
-                if (application.appBluetoothSocket == null) {
-                    application.appBluetoothDevice = application.appBluetoothAdapter.getRemoteDevice(address[0]);
-                    application.appBluetoothSocket = application.appBluetoothDevice.createInsecureRfcommSocketToServiceRecord(AppApplication.MY_UUID);
-                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-                    application.appBluetoothSocket.connect();
-                }
+
+                application.appBluetoothDevice = application.appBluetoothAdapter.getRemoteDevice(address[0]);
+                application.appBluetoothSocket = application.appBluetoothDevice.createInsecureRfcommSocketToServiceRecord(AppApplication.MY_UUID);
+                BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+                application.appBluetoothSocket.connect();
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();

@@ -1,5 +1,6 @@
 package net.fbvictorhugo.joystickbt;
 
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -24,6 +25,7 @@ public class MainActivity extends BaseActivity {
 
     private BluetoothRecyclerViewAdapter recyclerAdapter;
     private ArrayList<BluetoothModel> mPairedDevices;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,16 +99,22 @@ public class MainActivity extends BaseActivity {
 
     private void deviceSelected(final BluetoothModel device) {
 
+        mProgressDialog = ProgressDialog.show(this, getString(R.string.wait),
+                Utils.higlightText(this, String.format(getString(R.string.try_connect_to), device.getName()), device.getName(), R.color.bluetooth_color), true);
+
+
         super.connectInDevice(device, new ConnectionBluetoothCallback() {
+
             @Override
             public void onConnected(BluetoothModel device) {
-
+                mProgressDialog.dismiss();
                 Intent intent = new Intent(MainActivity.this, JoyActivity.class);
                 startActivity(intent);
             }
 
             @Override
             public void onFailed(String error) {
+                mProgressDialog.dismiss();
                 showToast("BT Connection Failed \"" + device.getAddress() + "\"\n:" + error);
             }
         });
