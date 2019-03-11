@@ -79,13 +79,15 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    protected void sendBluetoothCmd(String msg) {
+    protected void sendBluetoothCmd(final char cmd) {
         if (application.appBluetoothSocket != null) {
             try {
+                String msg = Character.toString(cmd);
                 application.appBluetoothSocket.getOutputStream().write(msg.getBytes());
             } catch (IOException e) {
                 showToast("CMD Error: " + e.getLocalizedMessage());
             }
         }
     }
+
 }

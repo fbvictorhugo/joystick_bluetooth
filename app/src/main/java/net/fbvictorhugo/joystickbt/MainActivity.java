@@ -9,8 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Button;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import net.fbvictorhugo.joystickbt.controller.BluetoothModel;
@@ -26,35 +28,20 @@ public class MainActivity extends BaseActivity {
     private BluetoothRecyclerViewAdapter recyclerAdapter;
     private ArrayList<BluetoothModel> mPairedDevices;
     private ProgressDialog mProgressDialog;
+    private Toolbar mToolbar;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
-        RecyclerView recyclerView = findViewById(R.id.recycler_bluetooth_list);
-        Button btnRefresh = findViewById(R.id.btn_bluetooth);
+        setContentView(R.layout.activity_main);
+
+        findViews();
+        setSupportActionBar(mToolbar);
 
         mPairedDevices = new ArrayList<>();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
-        recyclerAdapter = new BluetoothRecyclerViewAdapter(this, mPairedDevices);
-        recyclerAdapter.setOnClickListener(new BluetoothRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(BluetoothModel device, int position) {
-                deviceSelected(device);
-            }
-        });
-        recyclerView.setAdapter(recyclerAdapter);
-
-
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pairedDevicesList();
-            }
-        });
+        configureRecyclerView();
 
         initializeBluetooth();
     }
@@ -66,6 +53,48 @@ public class MainActivity extends BaseActivity {
         if (requestCode == AppApplication.REQUEST_ENABLE_BT && resultCode == RESULT_OK) {
             pairedDevicesList();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                pairedDevicesList();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private void findViews() {
+        mToolbar = findViewById(R.id.toolbar);
+        mRecyclerView = findViewById(R.id.recycler_bluetooth_list);
+    }
+
+    private void configureRecyclerView() {
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        recyclerAdapter = new BluetoothRecyclerViewAdapter(this, mPairedDevices);
+        recyclerAdapter.setOnClickListener(new BluetoothRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(BluetoothModel device, int position) {
+                deviceSelected(device);
+            }
+        });
+        mRecyclerView.setAdapter(recyclerAdapter);
     }
 
     private void initializeBluetooth() {
@@ -100,8 +129,8 @@ public class MainActivity extends BaseActivity {
     private void deviceSelected(final BluetoothModel device) {
 
         mProgressDialog = ProgressDialog.show(this, getString(R.string.wait),
-                Utils.higlightText(this, String.format(getString(R.string.try_connect_to), device.getName()), device.getName(), R.color.bluetooth_color), true);
-
+                Utils.higlightText(this, String.format(getString(R.string.try_connect_on), device.getName()), device.getName(), R.color.bluetooth_color), true);
+        mProgressDialog.setCancelable(false);
 
         super.connectInDevice(device, new ConnectionBluetoothCallback() {
 
@@ -120,5 +149,6 @@ public class MainActivity extends BaseActivity {
         });
 
     }
+
 
 }
