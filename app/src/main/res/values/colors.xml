@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">@color/arduino_orange</color>
 
     <color name="bluetooth_color">#0A3D91</color>
     <color name="arduino_orange">#EC7D00</color>
