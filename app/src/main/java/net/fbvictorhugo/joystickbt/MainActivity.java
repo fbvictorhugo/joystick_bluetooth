@@ -62,7 +62,6 @@ public class MainActivity extends BaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -100,7 +99,7 @@ public class MainActivity extends BaseActivity {
     private void initializeBluetooth() {
 
         if (application.appBluetoothAdapter == null) {
-            Toast.makeText(getApplicationContext(), "Bluetooth Device Not Available", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.bluetooth_device_not_available, Toast.LENGTH_LONG).show();
         } else if (!application.appBluetoothAdapter.isEnabled()) {
             Intent intentEnableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(intentEnableBT, AppApplication.REQUEST_ENABLE_BT);
@@ -121,7 +120,7 @@ public class MainActivity extends BaseActivity {
                 mPairedDevices.add(btModel);
             }
         } else {
-            showToast("No Paired Bluetooth Devices Found.");
+            showToast(getString(R.string.no_paired_bluetooth_devices_found));
         }
         recyclerAdapter.Update(mPairedDevices);
     }
@@ -144,7 +143,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onFailed(String error) {
                 mProgressDialog.dismiss();
-                showToast("BT Connection Failed \"" + device.getAddress() + "\"\n:" + error);
+                String msg = String.format(getString(R.string.frmt_bluetooth_connection_failed), device.getAddress());
+                showToast(msg + "\"\n:" + error);
             }
         });
 

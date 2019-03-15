@@ -1,10 +1,13 @@
 package net.fbvictorhugo.joystickbt.virtualjoy;
 
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import net.fbvictorhugo.joystickbt.BaseActivity;
 import net.fbvictorhugo.joystickbt.R;
@@ -12,16 +15,15 @@ import net.fbvictorhugo.joystickbt.controller.BluetoothCmd;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
-import static net.fbvictorhugo.joystickbt.controller.BluetoothCmd.BTN_B_ACTION_DOWN;
+import static net.fbvictorhugo.joystickbt.controller.BluetoothCmd.BTN_BUZZ;
 
 public class JoyActivity extends BaseActivity {
 
-    private JoystickView joystick;
-    private Button buttonLed;
-    private Button buttonBuzz;
+    private JoystickView mJoystickView;
+    private SwitchCompat mSwitchLed;
+    private ImageButton mButtonBuzz;
     private Toolbar mToolbar;
-
-    private boolean isLedOn;
+    private TextView mTextJoystickStatus;
 
     private int mLastMoveCmd = -42;
 
@@ -39,7 +41,7 @@ public class JoyActivity extends BaseActivity {
         configureButtonBuzz();
 
         if (getSupportActionBar() != null) {
-            String nameBT = application.appBluetoothDevice.getName();
+            String nameBT = application.appBluetoothModel.getName();
             getSupportActionBar().setSubtitle(String.format(getString(R.string.connected_on), nameBT));
         }
     }
@@ -53,22 +55,23 @@ public class JoyActivity extends BaseActivity {
     private void findViews() {
         mToolbar = findViewById(R.id.toolbar);
 
-        joystick = findViewById(R.id.joystickView);
-        buttonLed = findViewById(R.id.btnLed);
-        buttonBuzz = findViewById(R.id.btnBuzz);
+        mJoystickView = findViewById(R.id.joystickView);
+        mSwitchLed = findViewById(R.id.switchLed);
+        mButtonBuzz = findViewById(R.id.btnBuzz);
+        mTextJoystickStatus = findViewById(R.id.joystick_tv_status);
     }
 
     private void configureButtonLed() {
 
-        buttonLed.setOnClickListener(new View.OnClickListener() {
+
+        mSwitchLed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (isLedOn) {
-                    turnOffLed();
-                    isLedOn = false;
-                } else {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+
+                if (checked) {
                     turnOnLed();
-                    isLedOn = true;
+                } else {
+                    turnOffLed();
                 }
             }
         });
@@ -76,7 +79,7 @@ public class JoyActivity extends BaseActivity {
 
     private void configureButtonBuzz() {
 
-        buttonBuzz.setOnClickListener(new View.OnClickListener() {
+        mButtonBuzz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 buzz();
@@ -85,29 +88,38 @@ public class JoyActivity extends BaseActivity {
     }
 
     private void configureJoystick() {
-        joystick.setOnMoveListener(mJoystickMoveLister);
-        joystick.setAutoReCenterButton(true);
+        mJoystickView.setOnMoveListener(mJoystickMoveLister);
+        mJoystickView.setAutoReCenterButton(true);
     }
 
     JoystickView.OnMoveListener mJoystickMoveLister = new JoystickView.OnMoveListener() {
         @Override
         public void onMove(int angle, int strength) {
 
+            String axis = "";
             if (angle == 0) {
                 sendMoveBTCmd(BluetoothCmd.AXIS_CENTERED);
+                axis = "AXIS_CENTERED";
             } else if (angle > 0 && angle <= 70) {
                 sendMoveBTCmd(BluetoothCmd.AXIS_RIGHT_UP);
+                axis = "AXIS_RIGHT_UP";
             } else if (angle > 70 && angle <= 105) {
                 sendMoveBTCmd(BluetoothCmd.AXIS_UP);
+                axis = "AXIS_UP";
             } else if (angle > 105 && angle <= 180) {
                 sendMoveBTCmd(BluetoothCmd.AXIS_LEFT_UP);
+                axis = "AXIS_LEFT_UP";
             } else if (angle > 180 && angle <= 255) {
                 sendMoveBTCmd(BluetoothCmd.AXIS_LEFT_DOWN);
+                axis = "AXIS_LEFT_DOWN";
             } else if (angle > 255 && angle <= 285) {
                 sendMoveBTCmd(BluetoothCmd.AXIS_DOWN);
+                axis = "AXIS_DOWN";
             } else if (angle > 285 && angle <= 360) {
                 sendMoveBTCmd(BluetoothCmd.AXIS_RIGHT_DOWN);
+                axis = "AXIS_RIGHT_DOWN";
             }
+            mTextJoystickStatus.setText(String.format(getString(R.string.angle), angle, axis));
         }
     };
 
@@ -120,16 +132,16 @@ public class JoyActivity extends BaseActivity {
         mLastMoveCmd = cmd;
     }
 
-    private void turnOffLed() {
-        sendBluetoothCmd(BluetoothCmd.BTN_A_ACTION_DOWN);
+    private void turnOnLed() {
+        sendBluetoothCmd(BluetoothCmd.BTN_LED_ON);
     }
 
-    private void turnOnLed() {
-        sendBluetoothCmd(BluetoothCmd.BTN_A_ACTION_UP);
+    private void turnOffLed() {
+        sendBluetoothCmd(BluetoothCmd.BTN_LED_OFF);
     }
 
     private void buzz() {
-        sendBluetoothCmd(BTN_B_ACTION_DOWN);
+        sendBluetoothCmd(BTN_BUZZ);
     }
 
     //endregion

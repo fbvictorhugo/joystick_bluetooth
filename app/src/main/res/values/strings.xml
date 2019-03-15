@@ -4,4 +4,12 @@
     <string name="try_connect_on">Tentando conectar a %s.</string>
     <string name="connected_on">Conectado a %s</string>
     <string name="action_search">Pesquisar</string>
+    <string name="bluetooth_device_not_available">Dispositivo Bluetooth não disponível!</string>
+    <string name="no_paired_bluetooth_devices_found">Nenhum dispositivo Bluetooth paerado encontrado!</string>
+    <string name="frmt_bluetooth_connection_failed">Falha ao conectar a %s</string>
+
+    <string name="btn_horn">Buzina</string>
+    <string name="btn_leds">Luzes</string>
+    <string name="bluetooth_device_null">BT Device is null!</string>
+    <string name="angle">Angle: %d°\n %s</string>
 </resources>

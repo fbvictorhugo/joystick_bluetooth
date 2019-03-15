@@ -2,8 +2,9 @@ package net.fbvictorhugo.joystickbt;
 
 import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+
+import net.fbvictorhugo.joystickbt.controller.BluetoothModel;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -15,7 +16,7 @@ public class AppApplication extends Application {
 
     public BluetoothAdapter appBluetoothAdapter = null;
     public BluetoothSocket appBluetoothSocket = null;
-    public BluetoothDevice appBluetoothDevice;
+    public BluetoothModel appBluetoothModel;
 
     @Override
     public void onCreate() {
@@ -30,7 +31,7 @@ public class AppApplication extends Application {
             e.printStackTrace();
         } finally {
             appBluetoothSocket = null;
-            appBluetoothDevice = null;
+            appBluetoothModel = null;
         }
     }
 

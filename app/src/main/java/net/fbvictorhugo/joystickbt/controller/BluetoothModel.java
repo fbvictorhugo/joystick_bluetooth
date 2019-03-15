@@ -7,14 +7,10 @@ public class BluetoothModel {
     private String name;
     private String address;
     private boolean isBonded;
-
-    //
-    public BluetoothModel(String name, String address) {
-        this.name = name;
-        this.address = address;
-    }
+    private BluetoothDevice mDevice;
 
     public BluetoothModel(BluetoothDevice device) {
+        mDevice = device;
         this.name = device.getName();
         this.address = device.getAddress();
     }
@@ -24,16 +20,8 @@ public class BluetoothModel {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getAddress() {
         return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public boolean isBonded() {
@@ -42,6 +30,10 @@ public class BluetoothModel {
 
     public void setBonded(boolean bonded) {
         isBonded = bonded;
+    }
+
+    public BluetoothDevice getBluetoothDevice() {
+        return mDevice;
     }
 
     //endregion

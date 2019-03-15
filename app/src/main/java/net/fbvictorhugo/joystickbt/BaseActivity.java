@@ -32,26 +32,21 @@ public class BaseActivity extends AppCompatActivity {
     protected void connectInDevice(BluetoothModel device, ConnectionBluetoothCallback connectionBluetoothListener) {
         if (device != null && device.getAddress() != null) {
             mConnectionBTListener = connectionBluetoothListener;
-            new ConnectBT().execute(device.getAddress());
+            new BluetoothConnectTask().execute(device.getAddress());
         } else {
-            mConnectionBTListener.onFailed("BT Device is null!");
+            mConnectionBTListener.onFailed(String.valueOf(R.string.bluetooth_device_null));
         }
     }
 
-    private class ConnectBT extends AsyncTask<String, Integer, Boolean>  // UI thread
+    private class BluetoothConnectTask extends AsyncTask<String, Integer, Boolean>  // UI thread
     {
-
-        @Override
-        protected void onPreExecute() {
-            //show a progress dialog
-        }
 
         @Override
         protected Boolean doInBackground(String... address) {
             try {
 
-                application.appBluetoothDevice = application.appBluetoothAdapter.getRemoteDevice(address[0]);
-                application.appBluetoothSocket = application.appBluetoothDevice.createInsecureRfcommSocketToServiceRecord(AppApplication.MY_UUID);
+                application.appBluetoothModel = new BluetoothModel(application.appBluetoothAdapter.getRemoteDevice(address[0]));
+                application.appBluetoothSocket = application.appBluetoothModel.getBluetoothDevice().createInsecureRfcommSocketToServiceRecord(AppApplication.MY_UUID);
                 BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
                 application.appBluetoothSocket.connect();
                 return true;
@@ -63,12 +58,11 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Boolean result) //after the doInBackground, it checks if everything went fine
-        {
+        protected void onPostExecute(Boolean result) {
             if (result) {
 
                 if (mConnectionBTListener != null) {
-                    mConnectionBTListener.onConnected(new BluetoothModel(application.appBluetoothDevice));
+                    mConnectionBTListener.onConnected(application.appBluetoothModel);
                 }
             } else {
                 if (mConnectionBTListener != null) {
