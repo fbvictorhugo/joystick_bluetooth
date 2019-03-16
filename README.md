@@ -14,3 +14,6 @@ AXIS_LEFT_DOWN | 'g'
 AXIS_RIGHT_UP | 'h'
 AXIS_RIGHT_DOWN | 'i'
 AXIS_CENTERED | 'j'
+
+### Android App ###
+Android apk release, download [here](https://github.com/fbvictorhugo/joystick_bluetooth/releases/tag/v1.0.0)
