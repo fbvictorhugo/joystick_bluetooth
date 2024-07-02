@@ -13,13 +13,13 @@ import net.fbvictorhugo.joystickbt.BaseActivity;
 import net.fbvictorhugo.joystickbt.R;
 import net.fbvictorhugo.joystickbt.controller.BluetoothCmd;
 
-import io.github.controlwear.virtual.joystick.android.JoystickView;
+//import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 import static net.fbvictorhugo.joystickbt.controller.BluetoothCmd.BTN_BUZZ;
 
 public class JoyActivity extends BaseActivity {
 
-    private JoystickView mJoystickView;
+ //   private JoystickView mJoystickView;
     private SwitchCompat mSwitchLed;
     private ImageButton mButtonBuzz;
     private Toolbar mToolbar;
@@ -55,7 +55,7 @@ public class JoyActivity extends BaseActivity {
     private void findViews() {
         mToolbar = findViewById(R.id.toolbar);
 
-        mJoystickView = findViewById(R.id.joystickView);
+    //    mJoystickView = findViewById(R.id.joystickView);
         mSwitchLed = findViewById(R.id.switchLed);
         mButtonBuzz = findViewById(R.id.btnBuzz);
         mTextJoystickStatus = findViewById(R.id.joystick_tv_status);
@@ -88,11 +88,11 @@ public class JoyActivity extends BaseActivity {
     }
 
     private void configureJoystick() {
-        mJoystickView.setOnMoveListener(mJoystickMoveLister);
-        mJoystickView.setAutoReCenterButton(true);
+    //    mJoystickView.setOnMoveListener(mJoystickMoveLister);
+    //    mJoystickView.setAutoReCenterButton(true);
     }
 
-    JoystickView.OnMoveListener mJoystickMoveLister = new JoystickView.OnMoveListener() {
+  /*  JoystickView.OnMoveListener mJoystickMoveLister = new JoystickView.OnMoveListener() {
         @Override
         public void onMove(int angle, int strength) {
 
@@ -121,7 +121,7 @@ public class JoyActivity extends BaseActivity {
             }
             mTextJoystickStatus.setText(String.format(getString(R.string.angle), angle, axis));
         }
-    };
+    };*/
 
     //region COMMANDS
 
