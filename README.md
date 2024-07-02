@@ -1,6 +1,7 @@
 # Android Joystick Bluetooth for Arduino ![ic_launcher](app/src/main/res/mipmap-mdpi/ic_launcher.png)
 
-O aplicativo é um controle bluetooth para interagir com o Arduino.
+O aplicativo é um controle bluetooth, estilo joystick, para interagir com o Arduino e controlar um carrinho.
+Controlandos os eixos, luzes e buzina.
 
 #### Telas
 
@@ -17,6 +18,7 @@ O aplicativo é um controle bluetooth para interagir com o Arduino.
 Com o estudo o foco é criar um aplicativo que conecte com
 arduino ( [Código nesse repositório](https://github.com/fbvictorhugo/carhacking_arduino)) para
 controlar um carrinho.
+
 Utilizando a biblioteca [virtual-joystick-android](https://github.com/controlwear/virtual-joystick-android?tab=readme-ov-file#virtual-joystick-android) para fazer o joystick.
 *Código da biblioteca está comentado, pois atualmente não está fazendo o download*
 
