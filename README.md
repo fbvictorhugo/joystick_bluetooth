@@ -43,7 +43,4 @@ download [here](https://github.com/fbvictorhugo/joystick_bluetooth/releases/tag/
 | AXIS_CENTERED   | 'j'  |
 
 ## Outras Considerações
-
-Utilizado em diversas apresentações, em GDG e Arduino Day;
-
-**Construção paralizada:** Emeados de 2019;
+- **Construção paralizada:** Emeados de 2019;
